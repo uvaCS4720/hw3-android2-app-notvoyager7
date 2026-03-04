@@ -42,6 +42,9 @@ android {
 }
 
 dependencies {
+    // Learned how to add this dependency with Gemini 3 Pro
+    implementation(libs.androidx.ui.text.google.fonts)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
