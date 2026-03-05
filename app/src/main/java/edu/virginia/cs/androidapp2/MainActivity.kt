@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,6 +45,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import edu.virginia.cs.androidapp2.ui.theme.AndroidApp2Theme
 import kotlin.getValue
 
@@ -56,15 +60,25 @@ class MainActivity : ComponentActivity() {
         return@lazy database.gameDao()
     }
 
+    // Gemini 3 Pro showed me how to create this
+    // Linked me to the docs here: https://developer.android.com/topic/libraries/architecture/viewmodel/viewmodel-factories
+    val viewModel: MainViewModel by viewModels {
+        viewModelFactory {
+            initializer {
+                MainViewModel(GameRepository(gameDao, GameAPI.api))
+            }
+        }
+    }
+
+
+
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            var date: Long? by rememberSaveable { mutableStateOf(DateTimeUtil.getCurrentEpochMs()) }
-            var gender: String by rememberSaveable { mutableStateOf("Men") }
-            var loading: Boolean by rememberSaveable { mutableStateOf(false) }
-
+            val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+            val games = viewModel.games.collectAsStateWithLifecycle()
 
             AndroidApp2Theme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -80,26 +94,33 @@ class MainActivity : ComponentActivity() {
 
                         Row {
                             ModalDatePicker(
-                                onDateSelected = { date = it },
-                                text = DateTimeUtil.convertToLocalDateStringFromMS(date),
-                                initialSelectedDateMillis = date,
-                                disabled = loading
+                                onDateSelected = {
+                                    viewModel.updateDate(it)
+                                    viewModel.refresh()
+                                },
+                                text = DateTimeUtil.convertToLocalDateStringFromMS(uiState.value.date),
+                                initialSelectedDateMillis = uiState.value.date,
+                                disabled = uiState.value.loading
                             )
 
                             MinimalDropdownMenu(
-                                options = listOf("Men", "Women"),
-                                text = gender,
+                                options = listOf("men", "women"),
+                                // Got this from google AI overview to capitalize first character when displaying
+                                text = uiState.value.gender.replaceFirstChar { it.titlecase() },
                                 modifier = Modifier.padding(start = 5.dp),
-                                onClick = { gender = it },
-                                disabled = loading
+                                onClick = {
+                                    viewModel.updateGender(it)
+                                    viewModel.refresh()
+                                },
+                                disabled = uiState.value.loading
                             )
                         }
 
                         // Got this component from official compose docs:
                         // https://developer.android.com/develop/ui/compose/components/pull-to-refresh
                         PullToRefreshBox(
-                            isRefreshing = loading,
-                            onRefresh = { loading = true },
+                            isRefreshing = uiState.value.loading,
+                            onRefresh = { viewModel.refresh() },
                             modifier = Modifier
                         ) {
                             LazyColumn(
@@ -108,19 +129,24 @@ class MainActivity : ComponentActivity() {
                                     .padding(top = 10.dp),
                                 verticalArrangement = Arrangement.spacedBy(10.dp)
                             ) {
-                                item {
-                                    BasketballScoreCard(
-                                        home = "Home",
-                                        away = "Away",
-                                        gameState = "pre",
-                                        homeScore = null,
-                                        awayScore = null,
-                                        contestClock = "0:00",
-                                        // TODO: make sure to check if startTime is null before turning it into the string
-                                        startTime = "6:00 PM ET",
-                                        period = null,
-                                        winner = null
-                                    )
+                                for (game in games.value) {
+                                    val startTimeString = if (game.startTime != null) DateTimeUtil.getETTimeStringFromSeconds(game.startTime)
+                                    else ""
+
+                                    item {
+                                        BasketballScoreCard(
+                                            home = game.home,
+                                            away = game.away,
+                                            gameState = game.gameState,
+                                            homeScore = game.homeScore,
+                                            awayScore = game.awayScore,
+                                            contestClock = game.contestClock,
+                                            // TODO: make sure to check if startTime is null before turning it into the string
+                                            startTime = startTimeString,
+                                            period = game.period,
+                                            winner = game.winner
+                                        )
+                                    }
                                 }
                             }
                         }

@@ -31,6 +31,11 @@ class MainViewModel(
     )
     val uiState = _uiState.asStateFlow()
 
+    // Needs a refresh when it starts
+    init {
+        refresh()
+    }
+
     // This pattern was introduced to me by Gemini 3 Pro. It allows returning an inner flow based on an outer flow
     @OptIn(ExperimentalCoroutinesApi::class)
     val games = uiState.flatMapLatest { state ->
@@ -42,7 +47,7 @@ class MainViewModel(
         initialValue = listOf()  // value to display before flow is first emitted
     )
 
-    fun updateDate(date: Long) {
+    fun updateDate(date: Long?) {
         _uiState.update { uiState ->
             uiState.copy(date = date)
         }
