@@ -20,7 +20,7 @@ data class Game(
         val period: String?,
 
         @ColumnInfo(name = "contest_clock") val contestClock: String,
-        @ColumnInfo(name = "start_time") val startTime: Long,  // this is stored in epoch seconds
+        @ColumnInfo(name = "start_time") val startTime: Long?,  // this is stored in epoch seconds
 
         val date: Long,  // this is stored in epoch ms
         val gender: String  // this will only be "men" or "women"

@@ -50,7 +50,7 @@ class GameRepository(
                 }
 
                 val contestClock = gameRemoteData.contestClock
-                val startTime = gameRemoteData.startTimeEpoch.toLong()
+                val startTime: Long? = gameRemoteData.startTimeEpoch.toLongOrNull()  // in case this is ever "", made it nullable
 
                 // create Game database object and insert into room db
                 val game = Game(

@@ -111,6 +111,7 @@ class MainActivity : ComponentActivity() {
                                         homeScore = null,
                                         awayScore = null,
                                         contestClock = "0:00",
+                                        // TODO: make sure to check if startTime is null
                                         startTime = "6:00 PM ET",
                                         period = null,
                                         winner = null
