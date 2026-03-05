@@ -6,10 +6,37 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 object DateTimeUtil {
-    // convert epoch ms to local date for querying API and displaying date on picker button
-    fun convertToLocalDateFromMS(ms: Long): LocalDate {
-        return Instant.ofEpochMilli(ms).atZone(ZoneId.of("UTC")).toLocalDate()
+    // Google Gemini 3 Pro generated this function
+    // Gets the month (MM) as a zero-padded String (e.g., "01" - "12") from epoch ms
+    fun getMonthStringFromMS(ms: Long): String {
+        val formatter = DateTimeFormatter.ofPattern("MM")
+        return Instant.ofEpochMilli(ms)
+            .atZone(ZoneId.of("UTC"))
+            .format(formatter)
     }
+
+    // Google Gemini 3 Pro generated this function
+    // Gets the day (dd) as a zero-padded String (e.g., "01" - "31") from epoch ms
+    fun getDayStringFromMS(ms: Long): String {
+        val formatter = DateTimeFormatter.ofPattern("dd")
+        return Instant.ofEpochMilli(ms)
+            .atZone(ZoneId.of("UTC"))
+            .format(formatter)
+    }
+
+    // Google Gemini 3 Pro generated this function
+    // Gets the year (yyyy) as a 4-digit String (e.g., "2024") from epoch ms
+    fun getYearStringFromMS(ms: Long): String {
+        val formatter = DateTimeFormatter.ofPattern("yyyy")
+        return Instant.ofEpochMilli(ms)
+            .atZone(ZoneId.of("UTC"))
+            .format(formatter)
+    }
+
+    // convert epoch ms to local date for querying API and displaying date on picker button
+//    fun convertToLocalDateFromMS(ms: Long): LocalDate {
+//        return Instant.ofEpochMilli(ms).atZone(ZoneId.of("UTC")).toLocalDate()
+//    }
 
     // Google Gemini 3 Pro generated this function
     // convert from stored date in epoch ms to string for date picker button
