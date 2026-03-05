@@ -70,7 +70,7 @@ class MainActivity : ComponentActivity() {
                         )
 
                         Row {
-                            DatePicker(
+                            ModalDatePicker(
                                 onDateSelected = { date = it },
                                 text = DateTimeUtil.convertToLocalDateStringFromMS(date),
                                 initialSelectedDateMillis = date,
@@ -118,7 +118,7 @@ class MainActivity : ComponentActivity() {
 
 // Got these official android date pickers here: https://developer.android.com/develop/ui/compose/components/datepickers
 @Composable
-fun DatePicker(
+fun ModalDatePicker(
     onDateSelected: (Long?) -> Unit,
     text: String = "Select Date",
     initialSelectedDateMillis: Long? = null,
