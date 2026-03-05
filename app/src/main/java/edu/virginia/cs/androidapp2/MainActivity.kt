@@ -45,8 +45,17 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import edu.virginia.cs.androidapp2.ui.theme.AndroidApp2Theme
+import kotlin.getValue
 
 class MainActivity : ComponentActivity() {
+    // copied this singleton pattern from Professor McBurney's example in the Counters Lab
+    // this fetches the single gameDao for the entire application, and it only fetches it when it is needed
+    // (that is what the 'lazy' part is for)
+    private val gameDao by lazy {
+        val database = GameDatabase.getDatabase(applicationContext)
+        return@lazy database.gameDao()
+    }
+
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

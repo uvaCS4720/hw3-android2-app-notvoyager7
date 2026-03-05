@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface GameDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(game: Game)
+    suspend fun insert(game: Game)
 
     // pass the date in as epoch ms from the date picker
     @Query("SELECT * FROM Game WHERE date = :date and gender = :gender")
