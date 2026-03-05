@@ -99,8 +99,8 @@ class MainActivity : ComponentActivity() {
                                         home = "Home",
                                         away = "Away",
                                         gameState = "pre",
-                                        scoreHome = null,
-                                        scoreAway = null,
+                                        homeScore = null,
+                                        awayScore = null,
                                         contestClock = "0:00",
                                         startTime = "6:00 PM ET",
                                         period = null,
@@ -225,8 +225,8 @@ fun BasketballScoreCard(
     winner: String? = null,  // "home" or "away"
 
     // Goes in score area of score card (left column, right side)
-    scoreHome: Int? = null,  // null when not "live"
-    scoreAway: Int? = null,  // null when not "live"
+    homeScore: Int? = null,  // null when not "live"
+    awayScore: Int? = null,  // null when not "live"
 
     // Goes in state area of score card (right column, top)
     gameState: String,  // "pre", "live", or "final"
@@ -260,8 +260,8 @@ fun BasketballScoreCard(
                     val awayName = if (gameState == "final" && winner == "away") "$away (W)" else away
                     Text(text = awayName, fontWeight = FontWeight.Bold)
 
-                    if (scoreAway != null) {
-                        Text(text = scoreAway.toString(), fontWeight = FontWeight.Bold)
+                    if (awayScore != null) {
+                        Text(text = awayScore.toString(), fontWeight = FontWeight.Bold)
                     }
                 }
 
@@ -275,8 +275,8 @@ fun BasketballScoreCard(
                     val homeName = if (gameState == "final" && winner == "home") "$home (W)" else home
                     Text(text = homeName, fontWeight = FontWeight.Bold)
 
-                    if (scoreHome != null) {
-                        Text(text = scoreHome.toString(), fontWeight = FontWeight.Bold)
+                    if (homeScore != null) {
+                        Text(text = homeScore.toString(), fontWeight = FontWeight.Bold)
                     }
                 }
             }
