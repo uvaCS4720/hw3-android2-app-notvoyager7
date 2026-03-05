@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     // ksp plugin needed by room
     id("com.google.devtools.ksp")
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -35,15 +36,31 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
+
+//    kotlinOptions {
+//        jvmTarget = "11"
+//    }
+
+    // Gemini 3 Pro helped me update this to the new way of defining it since the above string no longer works with certain newer plugins
+    // issue and resolution here: https://kotlinlang.org/docs/gradle-compiler-options.html#migrate-from-kotlinoptions-to-compileroptions
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+        }
     }
+
     buildFeatures {
         compose = true
     }
 }
 
 dependencies {
+    // Retrofit dependencies
+    implementation(libs.retrofit)
+    implementation(libs.converter.kotlinx.serialization)
+    // kotlin serialization for use with retrofit
+    implementation(libs.kotlinx.serialization.json)
+
     // Room dependencies
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
