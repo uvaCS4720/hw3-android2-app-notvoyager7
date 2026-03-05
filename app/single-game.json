@@ -1,0 +1,66 @@
+{
+  "inputMD5Sum": "8fe2407ca785bff0c0d31a353f9d6dfa",
+  "instanceId": "d41d8cd98f00b204e9800998ecf8427e",
+  "updated_at": "2026-03-04 03:37:02",
+  "games": [
+    {
+      "game": {
+        "gameID": "6503395",
+        "away": {
+          "score": "83",
+          "names": {
+            "char6": "BRYANT",
+            "short": "Bryant",
+            "seo": "bryant",
+            "full": ""
+          },
+          "winner": false,
+          "seed": "",
+          "description": "",
+          "rank": "",
+          "conferences": [
+            {
+              "conferenceName": "",
+              "conferenceSeo": "america-east"
+            }
+          ]
+        },
+        "finalMessage": "FINAL",
+        "bracketRound": "",
+        "title": "Bryant New Hampshire",
+        "contestName": "",
+        "url": "/game/6503395",
+        "network": "",
+        "home": {
+          "score": "88",
+          "names": {
+            "char6": "UNH",
+            "short": "New Hampshire",
+            "seo": "new-hampshire",
+            "full": ""
+          },
+          "winner": true,
+          "seed": "",
+          "description": "",
+          "rank": "",
+          "conferences": [
+            {
+              "conferenceName": "",
+              "conferenceSeo": "america-east"
+            }
+          ]
+        },
+        "liveVideoEnabled": false,
+        "startTime": "6:00 PM ET",
+        "startTimeEpoch": "1772578800",
+        "bracketId": "",
+        "gameState": "final",
+        "startDate": "03/03/2026",
+        "currentPeriod": "FINAL",
+        "videoState": "",
+        "bracketRegion": "",
+        "contestClock": "0:00"
+      }
+    }
+  ]
+}
