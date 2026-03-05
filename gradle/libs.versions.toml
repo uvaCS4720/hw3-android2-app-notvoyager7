@@ -12,7 +12,8 @@ activityCompose = "1.12.3"
 composeBom = "2024.09.00"
 # Learned how to add this with Gemini 3 Pro
 androidx-compose-googlefonts = "1.10.4"
-material3 = "1.4.0"
+# removed this as it is redundant
+#material3 = "1.4.0"
 retrofit = "3.0.0"
 roomRuntime = "2.8.4"
 
