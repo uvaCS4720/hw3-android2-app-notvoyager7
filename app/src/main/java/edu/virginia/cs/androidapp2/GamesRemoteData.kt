@@ -8,6 +8,8 @@ import kotlinx.serialization.Serializable
 // I also used the docs for kotlinx.serialization Converter: https://github.com/square/retrofit/tree/trunk/retrofit-converters/kotlinx-serialization
 // I also used the kotlinx.serialization docs: https://kotlinlang.org/docs/serialization.html#serialize-and-deserialize-json
 
+// Google Gemini 3 Pro taught me that I could nest Serializables like this (which makes intuitive sense, but I wanted to check)
+
 @Serializable
 data class GamesRemoteData (
     @SerialName(value = "games")
