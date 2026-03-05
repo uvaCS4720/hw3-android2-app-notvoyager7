@@ -1,5 +1,7 @@
 package edu.virginia.cs.androidapp2
 
+import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.fail
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import java.time.LocalDate
@@ -8,7 +10,7 @@ import java.time.ZoneOffset
 // Gemini 3 assisted me in writing these tests
 class APITest {
     @Test
-    fun testFetch() = runBlocking {
+    fun testFinalGamesFetch() = runBlocking {
         val gender = "men"
         val month = "03"
         val day = "04"
@@ -77,10 +79,40 @@ class APITest {
                 gamesList.add(game)
             }
 
-            print(gamesList)
+//            print(gamesList)
+
+            assertEquals(40 , gamesList.size)
+
+            val jacksonvilleBellarmine = gamesList.filter { it.id == 6592976L }[0]
+            assertEquals("Bellarmine", jacksonvilleBellarmine.home)
+            assertEquals("Jacksonville", jacksonvilleBellarmine.away)
+            assertEquals("home", jacksonvilleBellarmine.winner)
+            assertEquals(82, jacksonvilleBellarmine.homeScore)
+            assertEquals(79, jacksonvilleBellarmine.awayScore)
+            assertEquals("final", jacksonvilleBellarmine.gameState)
+            assertEquals("FINAL", jacksonvilleBellarmine.period)
+            assertEquals("0:00", jacksonvilleBellarmine.contestClock)
+            assertEquals(1772643600L, jacksonvilleBellarmine.startTime)
+            assertEquals(date, jacksonvilleBellarmine.date)
+            assertEquals("men", jacksonvilleBellarmine.gender)
+
+            val wagnerConn = gamesList.filter { it.id == 6593023L }[0]
+            assertEquals("Central Conn. St.", wagnerConn.home)
+            assertEquals("Wagner", wagnerConn.away)
+            assertEquals("away", wagnerConn.winner)
+            assertEquals(60, wagnerConn.homeScore)
+            assertEquals(70, wagnerConn.awayScore)
+            assertEquals("final", wagnerConn.gameState)
+            assertEquals("FINAL", wagnerConn.period)
+            assertEquals("0:00", wagnerConn.contestClock)
+            assertEquals(1772668800L, wagnerConn.startTime)
+            assertEquals(date, wagnerConn.date)
+            assertEquals("men", wagnerConn.gender)
+
         } catch (e: Exception) {
             print(e.message)
             e.printStackTrace()
+            fail()
         }
     }
 }
