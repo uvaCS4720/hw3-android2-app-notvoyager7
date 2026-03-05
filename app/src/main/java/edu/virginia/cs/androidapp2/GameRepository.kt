@@ -2,6 +2,12 @@ package edu.virginia.cs.androidapp2
 
 import kotlinx.coroutines.flow.Flow
 
+// Gemini 3 Pro generated this RefreshResult enum for me
+sealed interface RefreshResult {
+    data object SUCCESS : RefreshResult
+    data object ERROR : RefreshResult
+}
+
 class GameRepository(
     private val gameDao: GameDao,
     private val gameAPI: GameAPIService
@@ -10,13 +16,15 @@ class GameRepository(
         return gameDao.getGames(date, gender)
     }
 
-    suspend fun refreshGames(date: Long, gender: String) {
+    suspend fun refreshGames(date: Long, gender: String): RefreshResult {
         val month: String = DateTimeUtil.getMonthStringFromMS(date)
         val day: String = DateTimeUtil.getDayStringFromMS(date)
         val year: String = DateTimeUtil.getYearStringFromMS(date)
 
         try {
             val gamesRemoteData: GamesRemoteData = gameAPI.getGameRemoteData(gender, month, day, year)
+
+            val gamesList: MutableList<Game> = mutableListOf()
 
             for (gameWrapper in gamesRemoteData.games) {
                 // get game off of wrapper
@@ -68,12 +76,19 @@ class GameRepository(
                     gender = gender
                 )
 
-                gameDao.insert(game)
+                gamesList.add(game)
             }
-        } catch (e: Exception) {
-            // TODO: handle error (I need to stop the loading in the viewmodel when this happens)
-        } finally {
 
+            gameDao.insertAll(gamesList.toList())
+        } catch (e: Exception) {
+            // Gemini 3 Pro suggested this to ensure that I do not mistakenly suppress a coroutine's cancellation
+            if (e is kotlinx.coroutines.CancellationException) {
+                throw e // Let coroutines handle cancellation
+            }
+
+            return RefreshResult.ERROR
         }
+
+        return RefreshResult.SUCCESS
     }
 }
