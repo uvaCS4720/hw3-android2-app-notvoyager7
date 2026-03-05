@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class GamesRemoteData (
     @SerialName(value = "games")
-    val games: List<GameWrapperRemoteData>
+    val games: List<GameWrapperRemoteData> = listOf()
 )
 
 @Serializable
@@ -36,12 +36,12 @@ data class GameRemoteData (
 //    @SerialName(value = "startTime")
 //    val startTime: String,
     @SerialName(value = "startTimeEpoch")
-    val startTimeEpoch: String,
+    val startTimeEpoch: String = "",
 
     @SerialName(value = "currentPeriod")
-    val currentPeriod: String,
+    val currentPeriod: String = "",
     @SerialName(value = "contestClock")
-    val contestClock: String,
+    val contestClock: String = "0:00",
 )
 
 @Serializable
@@ -49,9 +49,9 @@ data class TeamRemoteData (
     @SerialName(value = "names")
     val names: NameRemoteData,
     @SerialName(value = "score")
-    val score: String,
+    val score: String = "",
     @SerialName(value = "winner")
-    val winner: Boolean
+    val winner: Boolean = false
 )
 
 @Serializable
