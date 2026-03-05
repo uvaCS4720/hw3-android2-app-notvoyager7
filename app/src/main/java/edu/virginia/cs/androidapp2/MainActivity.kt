@@ -54,7 +54,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             var date: Long? by rememberSaveable { mutableStateOf(DateTimeUtil.getCurrentEpochMs()) }
             var gender: String by rememberSaveable { mutableStateOf("Men") }
-            var refreshing: Boolean by rememberSaveable { mutableStateOf(false) }
+            var loading: Boolean by rememberSaveable { mutableStateOf(false) }
 
 
             AndroidApp2Theme {
@@ -73,22 +73,24 @@ class MainActivity : ComponentActivity() {
                             DatePicker(
                                 onDateSelected = { date = it },
                                 text = DateTimeUtil.convertToLocalDateStringFromMS(date),
-                                initialSelectedDateMillis = date
+                                initialSelectedDateMillis = date,
+                                disabled = loading
                             )
 
                             MinimalDropdownMenu(
                                 options = listOf("Men", "Women"),
                                 text = gender,
                                 modifier = Modifier.padding(start = 5.dp),
-                                onClick = { gender = it }
+                                onClick = { gender = it },
+                                disabled = loading
                             )
                         }
 
                         // Got this component from official compose docs:
                         // https://developer.android.com/develop/ui/compose/components/pull-to-refresh
                         PullToRefreshBox(
-                            isRefreshing = refreshing,
-                            onRefresh = { refreshing = true },
+                            isRefreshing = loading,
+                            onRefresh = { loading = true },
                             modifier = Modifier
                         ) {
                             LazyColumn(modifier = Modifier.fillMaxSize().padding(top = 10.dp)) {
@@ -119,13 +121,15 @@ class MainActivity : ComponentActivity() {
 fun DatePicker(
     onDateSelected: (Long?) -> Unit,
     text: String = "Select Date",
-    initialSelectedDateMillis: Long? = null
+    initialSelectedDateMillis: Long? = null,
+    disabled: Boolean = false
 ) {
     val pickingDate = remember { mutableStateOf(false) }
 
     OutlinedButton(
         onClick = { pickingDate.value = !pickingDate.value },
-        shape = RectangleShape
+        shape = RectangleShape,
+        enabled = !disabled
     ) {
         Text(text = text)
     }
@@ -178,7 +182,8 @@ fun MinimalDropdownMenu(
     modifier: Modifier = Modifier,
     options: List<String> = listOf(),
     text: String = "Open Dropdown",
-    onClick: (option: String) -> Unit
+    onClick: (option: String) -> Unit,
+    disabled: Boolean = false
 ) {
     var expanded by remember { mutableStateOf(false) }
     Box (
@@ -186,7 +191,8 @@ fun MinimalDropdownMenu(
     ) {
         Button(
             onClick = {expanded = !expanded},
-            shape = RectangleShape
+            shape = RectangleShape,
+            enabled = !disabled
         ) {
             Text(text)
         }
