@@ -3,6 +3,7 @@ package edu.virginia.cs.androidapp2
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
 object DateTimeUtil {
@@ -61,7 +62,11 @@ object DateTimeUtil {
 
     // Google Gemini 3 Pro generated this function
     // This gets the current time in epoch ms for the date picker to start out with
+    // I updated this to get the time at midnight UTC to ensure standardization
     fun getCurrentEpochMs(): Long {
-        return Instant.now().toEpochMilli()
+        return LocalDate.now() // 1. Get current date in the user's local timezone
+            .atStartOfDay(ZoneOffset.UTC) // 2. Force it to midnight in UTC
+            .toInstant() // 3. Convert to Instant
+            .toEpochMilli() // 4. Get the raw milliseconds
     }
 }
