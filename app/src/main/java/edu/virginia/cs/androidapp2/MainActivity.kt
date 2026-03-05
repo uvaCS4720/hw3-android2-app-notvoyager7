@@ -102,7 +102,12 @@ class MainActivity : ComponentActivity() {
                             onRefresh = { loading = true },
                             modifier = Modifier
                         ) {
-                            LazyColumn(modifier = Modifier.fillMaxSize().padding(top = 10.dp)) {
+                            LazyColumn(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(top = 10.dp),
+                                verticalArrangement = Arrangement.spacedBy(10.dp)
+                            ) {
                                 item {
                                     BasketballScoreCard(
                                         home = "Home",
@@ -111,7 +116,7 @@ class MainActivity : ComponentActivity() {
                                         homeScore = null,
                                         awayScore = null,
                                         contestClock = "0:00",
-                                        // TODO: make sure to check if startTime is null
+                                        // TODO: make sure to check if startTime is null before turning it into the string
                                         startTime = "6:00 PM ET",
                                         period = null,
                                         winner = null
