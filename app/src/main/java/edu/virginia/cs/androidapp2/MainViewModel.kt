@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -41,6 +42,8 @@ class MainViewModel(
     val games = uiState.flatMapLatest { state ->
         if (state.date != null) gameRepository.getGames(state.date, state.gender)
         else gameRepository.getGames(-1, state.gender)
+    }.map { games ->
+        games.sortedBy { it.startTime }
     }.stateIn(
         scope = viewModelScope,  // make the 'cold' flow 'hot' in the viewModelScope
         started = SharingStarted.WhileSubscribed(5000),  // only stop sharing if more than 5s pass
