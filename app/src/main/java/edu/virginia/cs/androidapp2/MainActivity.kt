@@ -129,24 +129,24 @@ class MainActivity : ComponentActivity() {
                                     .padding(top = 10.dp),
                                 verticalArrangement = Arrangement.spacedBy(10.dp)
                             ) {
-                                for (game in games.value) {
+                                items (games.value.size) { i ->
+                                    val game = games.value[i]
+
+                                    // check to see if startTime is null, if so set to empty string
                                     val startTimeString = if (game.startTime != null) DateTimeUtil.getETTimeStringFromSeconds(game.startTime)
                                     else ""
 
-                                    item {
-                                        BasketballScoreCard(
-                                            home = game.home,
-                                            away = game.away,
-                                            gameState = game.gameState,
-                                            homeScore = game.homeScore,
-                                            awayScore = game.awayScore,
-                                            contestClock = game.contestClock,
-                                            // TODO: make sure to check if startTime is null before turning it into the string
-                                            startTime = startTimeString,
-                                            period = game.period,
-                                            winner = game.winner
-                                        )
-                                    }
+                                    BasketballScoreCard(
+                                        home = game.home,
+                                        away = game.away,
+                                        gameState = game.gameState,
+                                        homeScore = game.homeScore,
+                                        awayScore = game.awayScore,
+                                        contestClock = game.contestClock,
+                                        startTime = startTimeString,
+                                        period = game.period,
+                                        winner = game.winner
+                                    )
                                 }
                             }
                         }
