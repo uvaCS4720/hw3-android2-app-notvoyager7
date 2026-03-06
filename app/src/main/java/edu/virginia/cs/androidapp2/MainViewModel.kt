@@ -65,7 +65,20 @@ class MainViewModel(
     }
 
     fun refresh() {
-        if (uiState.value.date == null) return
+        // if date is null, mimic a fail to fetch
+        if (uiState.value.date == null) {
+            _uiState.update { uiState ->
+                uiState.copy(loading = true, error = false)
+            }
+
+            viewModelScope.launch {
+                delay(300)
+                _uiState.update { uiState ->
+                    uiState.copy(loading = false, error = true)
+                }
+            }
+            return
+        }
 
         _uiState.update { uiState ->
             uiState.copy(loading = true, error = false)
