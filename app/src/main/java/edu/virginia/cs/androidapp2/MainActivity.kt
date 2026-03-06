@@ -243,7 +243,8 @@ fun MinimalDropdownMenu(
         ) {
             for (option in options) {
                 DropdownMenuItem(
-                    text = { Text(option) },
+                    // Got this from google AI overview to capitalize first character when displaying
+                    text = { Text(option.replaceFirstChar { it.titlecase() }) },
                     onClick = {
                         expanded = false
                         onClick(option)
