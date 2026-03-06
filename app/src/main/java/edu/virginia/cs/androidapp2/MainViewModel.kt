@@ -82,18 +82,12 @@ class MainViewModel(
             delay(300)
 
             val result = gameRepository.refreshGames(date, gender)
+            // Gemini 3 suggested refactoring updated to uiState into one block (a good suggestion, so I took it)
             _uiState.update { uiState ->
-                uiState.copy(loading = false)
-            }
-
-            if (result == RefreshResult.ERROR) {
-                _uiState.update { uiState ->
-                    uiState.copy(error = true)
-                }
-            } else {
-                _uiState.update { uiState ->
-                    uiState.copy(error = false)
-                }
+                uiState.copy(
+                    loading = false,
+                    error = result == RefreshResult.ERROR
+                )
             }
         }
     }
