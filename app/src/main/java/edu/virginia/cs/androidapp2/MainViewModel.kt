@@ -19,6 +19,7 @@ data class MainUIState(
     val error: Boolean
 )
 
+// Google Gemini 3 Pro helped me write, debug, and design this complex view model that pulls from multiple flows
 class MainViewModel(
     val gameRepository: GameRepository
 ): ViewModel() {
