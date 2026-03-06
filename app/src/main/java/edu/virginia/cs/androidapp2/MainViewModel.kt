@@ -3,6 +3,7 @@ package edu.virginia.cs.androidapp2
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -67,7 +68,7 @@ class MainViewModel(
         if (uiState.value.date == null) return
 
         _uiState.update { uiState ->
-            uiState.copy(loading = true)
+            uiState.copy(loading = true, error = false)
         }
 
         // Gemini 3 Pro suggested capturing these before in order to prevent possible race conditions
@@ -75,6 +76,11 @@ class MainViewModel(
         val gender = uiState.value.gender
 
         viewModelScope.launch {
+            // Gemini suggested this to fix a weird visual glitch when trying to refresh on airplane mode
+            // The loading got set to false too fast to clear the animation
+            // Force a minimum display time of 300ms so Compose registers 'loading = true'
+            delay(300)
+
             val result = gameRepository.refreshGames(date, gender)
             _uiState.update { uiState ->
                 uiState.copy(loading = false)

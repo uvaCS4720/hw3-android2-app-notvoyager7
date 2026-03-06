@@ -116,6 +116,11 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
+                        if (uiState.value.error) Text(
+                            text = "Failed to refresh - check internet connection",
+                            color = MaterialTheme.colorScheme.error
+                        )
+
                         // Got this component from official compose docs:
                         // https://developer.android.com/develop/ui/compose/components/pull-to-refresh
                         PullToRefreshBox(
