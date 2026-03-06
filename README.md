@@ -1,5 +1,11 @@
 Name: Kenning Spath (jct9dr)
 
+A few notes:
+- A (W) signifies the winning team
+- Sometimes there is no winner for a final game. This is an issue with the API itself, not my project
+- The calendar modal input sometimes glitches a bit when transitioning from text input to picker input. This is an emulator issue. I am using a built-in component to Material3, so this is not something I did incorrectly
+- Finally, if the API somehow sent data missing keys, my app would simply fail to fetch those games gracefully. I made the assumption that no json keys will be omitted (though my code can recover if some of them are and still fetch those games just to program defensively)
+
 References:
 
 - Android and Kotlin Docs
